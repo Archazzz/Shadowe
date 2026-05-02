@@ -1,0 +1,187 @@
+/* pages/import/import.wxss */
+.import-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #F7F5FF;
+  overflow-x: hidden;
+}
+
+/* Custom Nav */
+.custom-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: rgba(247, 245, 255, 0.92);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-bottom: 1rpx solid rgba(237, 232, 254, 0.7);
+}
+
+.nav-status {
+  width: 100%;
+}
+
+/* Nav Bar */
+.nav-bar {
+  padding: 16rpx 24rpx 20rpx;
+  background: rgba(247, 245, 255, 0.92);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-bottom: 1rpx solid rgba(237, 232, 254, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.nav-back {
+  width: 64rpx;
+  height: 64rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-arrow {
+  font-size: 40rpx;
+  color: #1A1A2E;
+  font-weight: 500;
+}
+
+.nav-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #1A1A2E;
+  flex: 1;
+  text-align: center;
+}
+
+.nav-placeholder {
+  width: 64rpx;
+}
+
+/* Content Scroll */
+.content-scroll {
+  min-height: calc(100vh - 120rpx);
+  padding: 32rpx 24rpx;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+/* Method List */
+.method-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.method-card {
+  background: #FFFFFF;
+  border: 1rpx solid #EDE8FE;
+  border-radius: 24rpx;
+  padding: 28rpx 24rpx;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 2px 8px rgba(139, 108, 246, 0.08);
+  transition: transform 150ms ease;
+  margin-bottom: 20rpx;
+}
+
+.method-card:last-child {
+  margin-bottom: 0;
+}
+
+.method-card:active {
+  transform: scale(0.98);
+  opacity: 0.9;
+}
+
+.method-card--accent {
+  border-color: #FF6B9D;
+  border-width: 2rpx;
+}
+
+.method-icon-circle {
+  width: 108rpx;
+  height: 108rpx;
+  border-radius: 50%;
+  background: #EDE8FE;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-right: 24rpx;
+}
+
+.method-icon {
+  font-size: 44rpx;
+}
+
+.method-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.method-title-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 6rpx;
+}
+
+.method-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #1A1A2E;
+  margin-right: 12rpx;
+}
+
+.method-new-badge {
+  background: #FF6B9D;
+  color: #FFFFFF;
+  font-size: 18rpx;
+  font-weight: 700;
+  padding: 2rpx 12rpx;
+  border-radius: 8rpx;
+  line-height: 1.5;
+}
+
+.method-desc {
+  font-size: 24rpx;
+  color: #666677;
+  display: block;
+}
+
+.method-arrow {
+  font-size: 40rpx;
+  color: #B49DFB;
+  font-weight: 300;
+  flex-shrink: 0;
+}
+
+/* Import Tip */
+.import-tip {
+  display: flex;
+  align-items: flex-start;
+  margin-top: 40rpx;
+  padding: 24rpx;
+  background: rgba(139, 108, 246, 0.05);
+  border: 1rpx solid rgba(139, 108, 246, 0.1);
+  border-radius: 16rpx;
+}
+
+.tip-icon {
+  font-size: 32rpx;
+  flex-shrink: 0;
+  margin-top: 2rpx;
+  margin-right: 12rpx;
+}
+
+.tip-text {
+  font-size: 24rpx;
+  color: #666677;
+  line-height: 1.6;
+}

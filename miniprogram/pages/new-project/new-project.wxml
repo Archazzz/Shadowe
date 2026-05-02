@@ -1,0 +1,110 @@
+<view class="page">
+  <!-- 自定义导航栏 -->
+  <view class="custom-nav">
+    <view class="nav-status" style="height: {{statusBarHeight}}px;"></view>
+    <view class="nav-bar">
+      <view class="nav-back" bindtap="onBack">
+        <image class="nav-back-icon" src="/images/icon-arrow-left.png" mode="aspectFit" />
+      </view>
+      <view class="nav-title">新建项目</view>
+      <view class="nav-placeholder"></view>
+    </view>
+  </view>
+
+  <!-- 表单区域 -->
+  <view class="form-area">
+    <!-- 项目名称 -->
+    <view class="form-group">
+      <view class="form-label">
+        <text class="label-text">项目名称</text>
+        <text class="label-required">*</text>
+      </view>
+      <input
+        class="form-input"
+        placeholder="请输入项目名称"
+        placeholder-class="input-placeholder"
+        value="{{projectName}}"
+        bindinput="onProjectNameInput"
+        maxlength="50"
+      />
+    </view>
+
+    <!-- 研究类型 -->
+    <view class="form-group">
+      <view class="form-label">
+        <text class="label-text">研究类型</text>
+      </view>
+      <view class="type-cards">
+        <view
+          class="type-card {{selectedType === 'JTBD' ? 'type-card--active' : ''}}"
+          bindtap="onSelectType"
+          data-type="JTBD"
+        >
+          <view class="type-card-icon">🎯</view>
+          <view class="type-card-title">JTBD</view>
+          <view class="type-card-desc"> Jobs to be Done</view>
+        </view>
+        <view
+          class="type-card {{selectedType === '用户画像' ? 'type-card--active' : ''}}"
+          bindtap="onSelectType"
+          data-type="用户画像"
+        >
+          <view class="type-card-icon">👤</view>
+          <view class="type-card-title">用户画像</view>
+          <view class="type-card-desc">User Persona</view>
+        </view>
+        <view
+          class="type-card {{selectedType === '概念测试' ? 'type-card--active' : ''}}"
+          bindtap="onSelectType"
+          data-type="概念测试"
+        >
+          <view class="type-card-icon">💡</view>
+          <view class="type-card-title">概念测试</view>
+          <view class="type-card-desc">Concept Test</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 项目描述 -->
+    <view class="form-group">
+      <view class="form-label">
+        <text class="label-text">项目描述</text>
+      </view>
+      <textarea
+        class="form-textarea"
+        placeholder="请描述项目的研究目标、目标用户等信息"
+        placeholder-class="input-placeholder"
+        value="{{projectDesc}}"
+        bindinput="onProjectDescInput"
+        maxlength="500"
+        auto-height
+      />
+      <view class="textarea-counter">{{projectDesc.length}}/500</view>
+    </view>
+  </view>
+
+  <!-- AI 建议横幅 -->
+  <view class="ai-banner" bindtap="onGoChatCreate">
+    <view class="ai-banner-left">
+      <view class="ai-banner-icon">🤖</view>
+      <view class="ai-banner-text">
+        <view class="ai-banner-title">AI 帮我创建</view>
+        <view class="ai-banner-desc">通过对话快速生成项目方案</view>
+      </view>
+    </view>
+    <view class="ai-banner-arrow">
+      <text class="arrow-icon">›</text>
+    </view>
+  </view>
+
+  <!-- 底部创建按钮 -->
+  <view class="bottom-area">
+    <button
+      class="create-btn {{canCreate ? '' : 'create-btn--disabled'}}"
+      bindtap="onCreate"
+      disabled="{{!canCreate}}"
+    >
+      创建项目
+    </button>
+  </view>
+</view>

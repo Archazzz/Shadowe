@@ -1,0 +1,45 @@
+{
+  "pages": [
+    "pages/splash/splash",
+    "pages/home/home",
+    "pages/new-project/new-project",
+    "pages/chat-create/chat-create",
+    "pages/questionnaire-import/questionnaire-import",
+    "pages/project-detail/project-detail",
+    "pages/record/record",
+    "pages/import/import",
+    "pages/analyzing/analyzing",
+    "pages/single-insight/single-insight",
+    "pages/report/report",
+    "pages/evidence-chain/evidence-chain",
+    "pages/export/export",
+    "pages/profile/profile",
+    "pages/value-back/value-back"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#F7F5FF",
+    "navigationBarTitleText": "影察",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#F7F5FF"
+  },
+  "tabBar": {
+    "custom": true,
+    "color": "#9999AA",
+    "selectedColor": "#8B6CF6",
+    "backgroundColor": "#F7F5FF",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/home/home",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的"
+      }
+    ]
+  },
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

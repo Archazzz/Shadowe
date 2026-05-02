@@ -1,0 +1,113 @@
+<view class="detail-page">
+  <!-- Custom Nav Bar -->
+  <view class="custom-nav" style="padding-top: {{statusBarHeight}}px;">
+    <view class="nav-bar">
+      <view class="nav-back" bindtap="onBackTap">
+        <text class="nav-arrow">←</text>
+      </view>
+      <text class="nav-title">{{project.name || '项目详情'}}</text>
+      <view class="nav-more" bindtap="onMoreTap">
+        <text class="nav-more-icon">⋯</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="content-scroll" style="padding-top: {{statusBarHeight + 44}}px;">
+    <!-- Overview Card -->
+    <view class="overview-card" wx:if="{{project}}">
+      <view class="overview-ring">
+        <view class="ring-container">
+          <canvas type="2d" id="progressCanvas" class="ring-canvas"></canvas>
+          <view class="ring-inner">
+            <text class="ring-pct">{{project.progress}}%</text>
+            <text class="ring-label">完成度</text>
+          </view>
+        </view>
+      </view>
+      <view class="overview-stats">
+        <view class="stat-item">
+          <text class="stat-value">{{project.totalMaterials}}</text>
+          <text class="stat-label">总素材</text>
+        </view>
+        <view class="stat-divider"></view>
+        <view class="stat-item">
+          <text class="stat-value stat-value--success">{{project.analyzedCount}}</text>
+          <text class="stat-label">已分析</text>
+        </view>
+        <view class="stat-divider"></view>
+        <view class="stat-item">
+          <text class="stat-value stat-value--pending">{{project.pendingCount}}</text>
+          <text class="stat-label">待处理</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- Material List Section -->
+    <view class="section-header" wx:if="{{project}}">
+      <text class="section-title">素材列表</text>
+      <text class="section-count">{{materials.length}} 个素材</text>
+    </view>
+
+    <view class="material-list" wx:if="{{project && materials.length > 0}}">
+      <view class="material-card" wx:for="{{materials}}" wx:key="id" bindtap="onMaterialTap" data-id="{{item.id}}" data-status="{{item.status}}">
+        <view class="material-icon-wrap">
+          <text class="material-icon">{{item.type === 'audio' ? '🎙' : item.type === 'text' ? '📝' : '📊'}}</text>
+        </view>
+        <view class="material-info">
+          <text class="material-name">{{item.name}}</text>
+          <view class="material-meta">
+            <text wx:if="{{item.duration}}">{{item.duration}}</text>
+            <text wx:if="{{item.size}}"> · {{item.size}}</text>
+            <text wx:if="{{item.wordCount}}">{{item.wordCount}}</text>
+            <text wx:if="{{item.importMethod}}"> · {{item.importMethod}}</text>
+            <text wx:if="{{item.responseCount}}">{{item.responseCount}}</text>
+          </view>
+        </view>
+        <view class="material-status status-completed" wx:if="{{item.status === 'completed'}}">
+          <text class="status-text">完成</text>
+        </view>
+        <view class="material-status status-analyzing" wx:elif="{{item.status === 'analyzing'}}">
+          <text class="status-text">分析中</text>
+        </view>
+        <view class="material-status status-pending" wx:else>
+          <text class="status-text">待处理</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- Empty State -->
+    <view class="empty-state" wx:if="{{project && materials.length === 0}}">
+      <text class="empty-icon">📋</text>
+      <text class="empty-text">暂无素材</text>
+      <text class="empty-hint">点击下方按钮添加素材</text>
+    </view>
+
+    <!-- Bottom spacer for FAB -->
+    <view style="height: 160rpx"></view>
+  </view>
+
+  <!-- FAB Button -->
+  <view class="fab-overlay" wx:if="{{showFabMenu}}" bindtap="onFabOverlayTap"></view>
+  <view class="fab-menu" wx:if="{{showFabMenu}}">
+    <view class="fab-menu-item" bindtap="onFabRecord">
+      <view class="fab-menu-icon">🎙</view>
+      <text class="fab-menu-label">录音</text>
+    </view>
+    <view class="fab-menu-item" bindtap="onFabImport">
+      <view class="fab-menu-icon">📁</view>
+      <text class="fab-menu-label">导入文件</text>
+    </view>
+    <view class="fab-menu-item" bindtap="onFabText">
+      <view class="fab-menu-icon">📝</view>
+      <text class="fab-menu-label">文字输入</text>
+    </view>
+    <view class="fab-menu-item fab-menu-item--new" bindtap="onFabQuestionnaire">
+      <view class="fab-menu-icon">📤</view>
+      <text class="fab-menu-label">问卷导入</text>
+      <view class="fab-new-badge">NEW</view>
+    </view>
+  </view>
+  <view class="fab-btn" bindtap="onFabTap">
+    <text class="fab-icon">{{showFabMenu ? '×' : '+'}}</text>
+  </view>
+</view>

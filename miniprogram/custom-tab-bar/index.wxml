@@ -1,0 +1,71 @@
+<view class="tab-bar">
+  <!-- 馮页 -->
+  <view class="tab-item" data-index="0" bindtap="switchTab">
+    <view class="tab-icon {{selected === 0 ? 'active' : ''}}">
+      <view class="icon-home">
+        <view class="home-roof"></view>
+        <view class="home-body"></view>
+      </view>
+    </view>
+    <text class="tab-text {{selected === 0 ? 'active' : ''}}">首页</text>
+  </view>
+
+  <!-- 新建按钮 -->
+  <view class="tab-create" bindtap="onCreateTap">
+    <view class="create-btn">
+      <text class="create-icon">+</text>
+    </view>
+    <text class="create-text">新建</text>
+  </view>
+
+  <!-- 我的 -->
+  <view class="tab-item" data-index="1" bindtap="switchTab">
+    <view class="tab-icon {{selected === 1 ? 'active' : ''}}">
+      <view class="icon-user">
+        <view class="user-head"></view>
+        <view class="user-body"></view>
+      </view>
+    </view>
+    <text class="tab-text {{selected === 1 ? 'active' : ''}}">我的</text>
+  </view>
+
+  <!-- 创建方式弹窗 -->
+  <view class="sheet-mask {{showCreateSheet ? 'show' : ''}}" bindtap="onCloseSheet"></view>
+  <view class="sheet-panel {{showCreateSheet ? 'show' : ''}}">
+    <view class="sheet-handle"></view>
+    <view class="sheet-header">
+      <view>
+        <text class="sheet-title">新建项目</text>
+        <text class="sheet-sub">选择创建方式</text>
+      </view>
+      <view class="sheet-close" bindtap="onCloseSheet">
+        <text>✕</text>
+      </view>
+    </view>
+
+    <view class="sheet-option" bindtap="onChatCreate">
+      <view class="option-icon ai-icon">
+        <text>🤖</text>
+      </view>
+      <view class="option-info">
+        <view class="option-label">
+          AI 对话创建
+          <text class="option-badge">推荐</text>
+        </view>
+        <text class="option-desc">自然语言描述，AI帮你规划项目结构</text>
+      </view>
+      <text class="option-arrow">›</text>
+    </view>
+
+    <view class="sheet-option" bindtap="onFormCreate">
+      <view class="option-icon form-icon">
+        <text>📝</text>
+      </view>
+      <view class="option-info">
+        <view class="option-label">表单快速创建</view>
+        <text class="option-desc">手动填写项目信息和研究目标</text>
+      </view>
+      <text class="option-arrow">›</text>
+    </view>
+  </view>
+</view>

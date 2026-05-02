@@ -1,0 +1,120 @@
+<view class="page">
+  <!-- 自定义导航栏 -->
+  <view class="custom-nav">
+    <view class="nav-status" style="height: {{statusBarHeight}}px;"></view>
+    <view class="nav-bar">
+      <view class="nav-back" bindtap="onBack">
+        <image class="nav-back-icon" src="/images/icon-arrow-left.png" mode="aspectFit" />
+      </view>
+      <view class="nav-title">AI创建项目</view>
+      <view class="nav-skip" bindtap="onSkip">跳过</view>
+    </view>
+  </view>
+
+  <!-- 聊天消息区域 -->
+  <scroll-view
+    class="chat-area"
+    scroll-y
+    scroll-into-view="{{scrollTarget}}"
+    scroll-with-animation
+  >
+    <view class="chat-messages">
+      <block wx:for="{{messages}}" wx:key="id">
+        <!-- AI 消息 -->
+        <view wx:if="{{item.role === 'ai'}}" class="message-row message-row--ai">
+          <view class="avatar avatar--ai">🤖</view>
+          <view class="message-content message-content--ai">
+            <view class="bubble bubble--ai">{{item.content}}</view>
+            <!-- 快捷建议标签 -->
+            <view wx:if="{{item.suggestions}}" class="suggestions">
+              <view
+                class="suggestion-tag"
+                wx:for="{{item.suggestions}}"
+                wx:for-item="suggestion"
+                wx:key="*this"
+                bindtap="onSuggestionTap"
+                data-text="{{suggestion}}"
+              >
+                {{suggestion}}
+              </view>
+            </view>
+          </view>
+        </view>
+
+        <!-- 用户消息 -->
+        <view wx:elif="{{item.role === 'user'}}" class="message-row message-row--user">
+          <view class="message-content message-content--user">
+            <view class="bubble bubble--user">{{item.content}}</view>
+          </view>
+        </view>
+      </block>
+
+      <!-- 正在输入指示器 -->
+      <view wx:if="{{isTyping}}" class="message-row message-row--ai">
+        <view class="avatar avatar--ai">🤖</view>
+        <view class="message-content message-content--ai">
+          <view class="bubble bubble--ai typing-bubble">
+            <view class="typing-indicator">
+              <view class="typing-dot typing-dot--1"></view>
+              <view class="typing-dot typing-dot--2"></view>
+              <view class="typing-dot typing-dot--3"></view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 项目草稿卡片 -->
+      <view wx:if="{{showDraft}}" class="message-row message-row--ai">
+        <view class="avatar avatar--ai">🤖</view>
+        <view class="message-content message-content--ai">
+          <view class="draft-card">
+            <view class="draft-card-header">
+              <view class="draft-card-icon">📋</view>
+              <view class="draft-card-title">项目草稿已生成</view>
+            </view>
+            <view class="draft-card-body">
+              <view class="draft-field">
+                <text class="draft-label">项目名称</text>
+                <text class="draft-value">{{draftData.name}}</text>
+              </view>
+              <view class="draft-field">
+                <text class="draft-label">研究类型</text>
+                <text class="draft-value">{{draftData.type}}</text>
+              </view>
+              <view class="draft-field">
+                <text class="draft-label">项目描述</text>
+                <text class="draft-value">{{draftData.description}}</text>
+              </view>
+            </view>
+            <view class="draft-card-actions">
+              <view class="draft-btn draft-btn--edit" bindtap="onEditDraft">修改</view>
+              <view class="draft-btn draft-btn--confirm" bindtap="onConfirmDraft">确认创建</view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 底部锚点 -->
+      <view id="msg-bottom"></view>
+    </view>
+  </scroll-view>
+
+  <!-- 底部输入区域 -->
+  <view class="input-area">
+    <view class="input-capsule">
+      <input
+        class="chat-input"
+        placeholder="输入你的想法..."
+        placeholder-class="input-placeholder"
+        value="{{inputText}}"
+        bindinput="onInputChange"
+        bindconfirm="onSend"
+        confirm-type="send"
+        adjust-position="{{true}}"
+      />
+      <view class="send-btn {{inputText.trim() ? 'send-btn--active' : ''}}" bindtap="onSend">
+        <text class="send-icon">➤</text>
+      </view>
+    </view>
+  </view>
+</view>

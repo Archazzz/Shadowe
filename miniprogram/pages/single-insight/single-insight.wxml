@@ -1,0 +1,120 @@
+<view class="insight-page">
+  <!-- Custom Nav -->
+  <view class="custom-nav">
+    <view class="nav-status" style="height: {{statusBarHeight}}px;"></view>
+    <view class="nav-bar glass-nav">
+    <view class="nav-left" bindtap="onBack">
+      <text class="nav-icon">←</text>
+    </view>
+    <text class="nav-title">影察</text>
+    <view class="nav-right"></view>
+    </view>
+  </view>
+
+  <!-- Scrollable Content -->
+  <scroll-view scroll-y class="content-scroll" style="padding-top: {{statusBarHeight + 44}}px; height: calc(100vh - {{statusBarHeight + 44}}px);">
+    <!-- Hero Section -->
+    <view class="hero-section">
+      <!-- AI Head Illustration Placeholder -->
+      <view class="ai-illustration">
+        <view class="ai-circle ai-outer"></view>
+        <view class="ai-circle ai-middle"></view>
+        <view class="ai-circle ai-inner"></view>
+        <view class="ai-head">
+          <view class="ai-eye ai-eye-left"></view>
+          <view class="ai-eye ai-eye-right"></view>
+        </view>
+        <!-- Orbit dots -->
+        <view class="orbit-dot dot-1"></view>
+        <view class="orbit-dot dot-2"></view>
+        <view class="orbit-dot dot-3"></view>
+        <view class="orbit-dot dot-4"></view>
+      </view>
+
+      <view class="hero-text">
+        <text class="hero-title">我们发现了 <text class="hero-highlight">{{insights.length}}</text> 个关键洞察</text>
+        <text class="hero-subtitle">基于本次访谈的深度分析</text>
+      </view>
+    </view>
+
+    <!-- Filter Tabs -->
+    <scroll-view scroll-x class="filter-tabs" enhanced show-scrollbar="{{false}}">
+      <view class="filter-tab {{activeFilter === item.id ? 'filter-active' : ''}}" wx:for="{{filterTabs}}" wx:key="id" bindtap="onFilterTap" data-id="{{item.id}}">
+        <text class="filter-text">{{item.label}}</text>
+        <text class="filter-count">{{item.count}}</text>
+      </view>
+    </scroll-view>
+
+    <!-- Insight Cards -->
+    <view class="insight-list">
+      <view class="insight-card" wx:for="{{filteredInsights}}" wx:key="id">
+        <!-- Top Row: Tags + Interview Count -->
+        <view class="card-top">
+          <view class="tag-row">
+            <view class="tag tag-{{item.category}}" wx:if="{{item.category}}">{{item.categoryLabel}}</view>
+            <view class="tag tag-freq-{{item.frequency}}" wx:if="{{item.frequency}}">{{item.frequencyLabel}}</view>
+          </view>
+          <view class="interview-count">
+            <text class="interview-icon">🎙</text>
+            <text class="interview-text">相关访谈 {{item.relatedInterviews}}</text>
+          </view>
+        </view>
+
+        <!-- Body: Text + Impact Ring -->
+        <view class="card-body">
+          <view class="card-text-content">
+            <text class="card-title">{{item.title}}</text>
+            <text class="card-desc">{{item.desc}}</text>
+
+            <!-- Quote -->
+            <view class="card-quote">
+              <text class="quote-mark">「</text>
+              <text class="quote-text">{{item.quote}}</text>
+              <text class="quote-mark">」</text>
+            </view>
+          </view>
+
+          <!-- Impact Ring - Canvas fallback -->
+          <view class="impact-ring-wrap">
+            <view class="impact-ring-canvas-wrap">
+              <canvas type="2d" id="impactCanvas_{{item.id}}" class="impact-canvas"></canvas>
+              <view class="impact-ring-inner">
+                <text class="impact-value">{{item.impact}}</text>
+                <text class="impact-label">影响度</text>
+              </view>
+            </view>
+          </view>
+        </view>
+
+        <!-- Bottom Row: Avatars + Evidence Link -->
+        <view class="card-bottom">
+          <view class="avatar-cluster">
+            <view class="avatar-item" wx:for="{{item.avatarColors}}" wx:for-item="color" wx:for-index="cIdx" style="background: {{color}}; z-index: {{item.avatarColors.length - cIdx}}; margin-left: {{cIdx > 0 ? '-12rpx' : '0'}}"></view>
+            <text class="avatar-extra" wx:if="{{item.extra > 0}}">+{{item.extra}}</text>
+          </view>
+          <view class="evidence-link" data-id="{{item.id}}" bindtap="onViewEvidence">
+            <text class="evidence-link-text">查看证据链</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- Bottom Hint -->
+    <view class="bottom-hint" bindtap="onViewReport">
+      <view class="hint-icon-wrap">
+        <text class="hint-icon">🕐</text>
+      </view>
+      <text class="hint-text">洞察已自动归类，点击可查看综合报告</text>
+      <text class="hint-arrow">›</text>
+    </view>
+
+    <!-- CTA Button -->
+    <view class="cta-section">
+      <view class="cta-btn" bindtap="onGenerateReport">
+        <text class="cta-text">生成洞察报告</text>
+      </view>
+    </view>
+
+    <view style="height: 32rpx;"></view>
+  </scroll-view>
+</view>

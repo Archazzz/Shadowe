@@ -1,0 +1,141 @@
+<view class="home-page">
+  <!-- Nav bar -->
+  <view class="custom-nav">
+    <view class="nav-status" style="height: {{statusBarHeight}}px;"></view>
+    <view class="nav-bar">
+    <view class="nav-left">
+      <view class="brand-logo">
+        <text class="brand-emoji">🤖</text>
+      </view>
+      <view class="brand-info">
+        <text class="brand-name">Shadowe</text>
+        <text class="brand-sub">影 察</text>
+      </view>
+    </view>
+    <view class="nav-right">
+      <view class="plan-badge">
+        <text class="plan-text">免费版</text>
+      </view>
+      <view class="bell-icon">
+        <text>🔔</text>
+        <view class="bell-dot"></view>
+      </view>
+    </view>
+    </view>
+  </view>
+
+  <!-- Scrollable content -->
+  <scroll-view scroll-y class="content-scroll" style="padding-top: {{statusBarHeight + 44}}px; height: calc(100vh - {{statusBarHeight + 44}}px);" enable-flex>
+    <!-- Welcome card -->
+    <view class="welcome-card">
+      <view class="welcome-glow"></view>
+      <text class="welcome-greeting">你好 👋 {{user.name}}</text>
+      <text class="welcome-text">本周完成了 <text class="highlight">3</text> 个分析，继续加油！</text>
+
+      <!-- KPI chips -->
+      <view class="kpi-row">
+        <view class="kpi-chip">
+          <text class="kpi-icon">📁</text>
+          <text class="kpi-value">{{user.totalProjects}}</text>
+          <text class="kpi-label">研究项目</text>
+        </view>
+        <view class="kpi-chip">
+          <text class="kpi-icon">🎙️</text>
+          <text class="kpi-value">{{user.totalInterviews}}</text>
+          <text class="kpi-label">访谈次数</text>
+        </view>
+        <view class="kpi-chip">
+          <text class="kpi-icon">⏱️</text>
+          <text class="kpi-value">12h</text>
+          <text class="kpi-label">累计时长</text>
+        </view>
+      </view>
+
+      <!-- Progress bar -->
+      <view class="progress-section">
+        <view class="progress-header">
+          <text class="progress-label">本周目标进度</text>
+          <text class="progress-pct">60%</text>
+        </view>
+        <view class="progress-bar">
+          <view class="progress-fill" style="width: 60%"></view>
+        </view>
+      </view>
+    </view>
+
+    <!-- Quick actions -->
+    <view class="actions-row">
+      <view class="action-btn" bindtap="onRecordTap">
+        <text class="action-icon">🎙️</text>
+        <text class="action-label">开始录音</text>
+        <text class="action-sub">实时转写</text>
+      </view>
+      <view class="action-btn" bindtap="onImportTap">
+        <text class="action-icon">📁</text>
+        <text class="action-label">导入素材</text>
+        <text class="action-sub">文件·文字稿</text>
+      </view>
+      <view class="action-btn new-badge" bindtap="onQuestionnaireTap">
+        <view class="new-tag">NEW</view>
+        <text class="action-icon">⚡</text>
+        <text class="action-label">问卷筛选</text>
+        <text class="action-sub">AI智能匹配</text>
+      </view>
+    </view>
+
+    <!-- Project list -->
+    <view class="section-header">
+      <text class="section-title">我的项目</text>
+      <view class="section-action" bindtap="onNewProjectTap">
+        <text>+ 新建</text>
+      </view>
+    </view>
+
+    <view class="project-list">
+      <view class="project-card" wx:for="{{projects}}" wx:key="id" bindtap="onProjectTap" data-id="{{item.id}}">
+        <!-- Left accent bar -->
+        <view class="project-accent" style="background: {{item.type === 'JTBD' ? '#8B6CF6' : item.type === 'persona' ? '#FF6B9D' : '#FF9500'}}"></view>
+        <view class="project-content">
+          <!-- Top row -->
+          <view class="project-top">
+            <view class="type-badge" style="background: {{item.type === 'JTBD' ? 'rgba(139,108,246,0.1)' : item.type === 'persona' ? 'rgba(255,107,157,0.1)' : 'rgba(255,149,0,0.1)'}}">
+              <text class="type-icon">{{item.type === 'JTBD' ? '🎯' : item.type === 'persona' ? '👥' : '💡'}}</text>
+              <text class="type-label" style="color: {{item.type === 'JTBD' ? '#8B6CF6' : item.type === 'persona' ? '#FF6B9D' : '#FF9500'}}">{{item.type === 'JTBD' ? 'JTBD' : item.type === 'persona' ? '用户画像' : '概念测试'}}</text>
+            </view>
+            <view class="status-badge" style="background: {{item.status === 'completed' ? 'rgba(52,199,89,0.1)' : item.status === 'analyzing' ? 'rgba(255,149,0,0.1)' : 'rgba(153,153,170,0.1)'}}">
+              <text class="status-text" style="color: {{item.status === 'completed' ? '#34C759' : item.status === 'analyzing' ? '#FF9500' : '#9999AA'}}">{{item.status === 'completed' ? '✅ 分析完成' : item.status === 'analyzing' ? '⏳ 分析中' : '⭕ 待处理'}}</text>
+            </view>
+          </view>
+
+          <text class="project-name">{{item.name}}</text>
+          <text class="project-meta">{{item.totalMaterials}} 个素材 · {{item.analyzedCount}} 已完成 · 更新于 {{item.updatedAt}}</text>
+
+          <!-- Progress -->
+          <view class="project-progress">
+            <view class="progress-bar">
+              <view class="progress-fill" style="width: {{item.progress}}%; background: linear-gradient(90deg, {{item.type === 'JTBD' ? '#8B6CF6' : item.type === 'persona' ? '#FF6B9D' : '#FF9500'}}, #C4B5FD)"></view>
+            </view>
+            <text class="progress-text">{{item.progress}}% 完成</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- Recent activities -->
+    <view class="section-header">
+      <text class="section-title">最近活动</text>
+    </view>
+
+    <view class="activity-card">
+      <view class="activity-item" wx:for="{{activities}}" wx:key="id" bindtap="onActivityTap" data-type="{{item.type}}">
+        <view class="activity-icon-wrap">
+          <text>{{item.type === 'completed' ? '✅' : item.type === 'recording' ? '⏳' : '⭕'}}</text>
+        </view>
+        <text class="activity-text">{{item.text}}</text>
+        <text class="activity-time">{{item.time}}</text>
+      </view>
+    </view>
+
+    <view style="height: 32rpx"></view>
+  </scroll-view>
+</view>

@@ -1,0 +1,60 @@
+<view class="splash-page">
+  <!-- Status Bar Spacer -->
+  <view style="height: {{statusBarHeight}}px;"></view>
+
+  <!-- Ambient glow -->
+  <view class="glow-top"></view>
+
+  <!-- Logo -->
+  <view class="logo-section">
+    <view class="logo-ring ring-1"></view>
+    <view class="logo-ring ring-2"></view>
+    <view class="logo-ring ring-3"></view>
+    <view class="logo-circle">
+      <text class="logo-icon">🤖</text>
+    </view>
+  </view>
+
+  <!-- Brand name -->
+  <view class="brand-section">
+    <text class="brand-name">AI用户研究助手</text>
+    <text class="brand-slogan">人类访谈者的隐形分析助手</text>
+  </view>
+
+  <!-- Divider -->
+  <view class="divider-line"></view>
+
+  <!-- Feature cards -->
+  <view class="features-row">
+    <view class="feature-card">
+      <text class="feature-icon">🎙️</text>
+      <text class="feature-label">录音转写</text>
+      <text class="feature-sub">实时多说话人</text>
+    </view>
+    <view class="feature-card">
+      <text class="feature-icon">🧠</text>
+      <text class="feature-label">AI深度洞察</text>
+      <text class="feature-sub">痛点·需求·机会</text>
+    </view>
+    <view class="feature-card">
+      <text class="feature-icon">📊</text>
+      <text class="feature-label">综合报告</text>
+      <text class="feature-sub">一键导出分享</text>
+    </view>
+  </view>
+
+  <!-- Version badge -->
+  <view class="version-badge">
+    <view class="version-dot"></view>
+    <text class="version-text">Design System 1.0</text>
+  </view>
+
+  <!-- Bottom CTA -->
+  <view class="cta-section">
+    <button class="start-btn" bindtap="onStartTap">
+      <text>开启体验</text>
+      <text class="btn-arrow">→</text>
+    </button>
+    <text class="login-link" bindtap="onLoginTap">已有账号？登录</text>
+  </view>
+</view>

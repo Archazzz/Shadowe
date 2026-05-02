@@ -1,0 +1,90 @@
+<view class="page">
+  <!-- Header -->
+  <view class="custom-header">
+    <view class="header-status" style="height: {{statusBarHeight}}px;"></view>
+    <view class="header">
+    <view class="header-left" bindtap="goBack">
+      <image class="back-arrow" src="/static/icons/arrow-left-white.svg" mode="aspectFit" />
+    </view>
+    <view class="header-center">
+      <image class="brand-logo" src="/static/icons/brand-logo.svg" mode="aspectFit" />
+      <text class="brand-text">影察 · 录音</text>
+    </view>
+    <view class="header-right">
+      <!-- Recording status text + dot -->
+      <view class="recording-status-wrap">
+        <view class="red-dot {{isRecording ? 'dot-pulse' : ''}}"></view>
+        <text class="recording-status-text {{isRecording ? 'status-recording' : 'status-paused'}}">{{isRecording ? '录音中' : '已暂停'}}</text>
+      </view>
+    </view>
+    </view>
+  </view>
+
+  <!-- Timer -->
+  <view class="timer-section" style="margin-top: {{statusBarHeight + 100}}px;">
+    <text class="timer">{{timerDisplay}}</text>
+    <text class="timer-subtitle">访谈1-张先生</text>
+  </view>
+
+  <!-- Waveform Visualizer -->
+  <view class="waveform-section">
+    <view class="ripple-container">
+      <view class="ripple ripple-1" wx:if="{{isRecording}}"></view>
+      <view class="ripple ripple-2" wx:if="{{isRecording}}"></view>
+      <view class="ripple ripple-3" wx:if="{{isRecording}}"></view>
+      <view class="waveform-circle">
+        <view class="wave-bars">
+          <view class="wave-bar wave-bar-{{index}}" wx:for="{{waveBars}}" wx:key="index"
+                style="height: {{item}}rpx;">
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- Control Buttons -->
+  <view class="controls">
+    <view class="control-btn control-bookmark" bindtap="addMarker">
+      <view class="bookmark-icon">
+        <text class="bookmark-text">标记</text>
+      </view>
+    </view>
+
+    <view class="control-btn control-main" bindtap="toggleRecording">
+      <view class="play-pause-icon" wx:if="{{!isRecording && !isPaused}}">
+        <view class="play-triangle"></view>
+      </view>
+      <view class="pause-icon" wx:elif="{{isRecording}}">
+        <view class="pause-bar"></view>
+        <view class="pause-bar"></view>
+      </view>
+      <view class="play-pause-icon" wx:elif="{{isPaused}}">
+        <view class="play-triangle"></view>
+      </view>
+    </view>
+
+    <view class="control-btn control-stop" bindtap="stopRecording">
+      <view class="stop-icon"></view>
+    </view>
+  </view>
+
+  <!-- Collapsible Markers Section -->
+  <view class="markers-section">
+    <view class="markers-header" bindtap="toggleMarkers">
+      <text class="markers-title">标记点 ({{markers.length}})</text>
+      <view class="markers-toggle {{markersExpanded ? 'expanded' : ''}}">
+        <text class="toggle-arrow">›</text>
+      </view>
+    </view>
+    <view class="markers-list" wx:if="{{markersExpanded && markers.length > 0}}">
+      <view class="marker-item" wx:for="{{markers}}" wx:key="index">
+        <view class="marker-dot"></view>
+        <text class="marker-time">{{item.time}}</text>
+        <text class="marker-label">{{item.label}}</text>
+      </view>
+    </view>
+    <view class="markers-empty" wx:if="{{markersExpanded && markers.length === 0}}">
+      <text class="empty-text">暂无标记点</text>
+    </view>
+  </view>
+</view>

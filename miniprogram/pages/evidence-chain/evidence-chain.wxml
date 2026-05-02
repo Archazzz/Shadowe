@@ -1,0 +1,87 @@
+<view class="evidence-page">
+  <!-- Custom Nav -->
+  <view class="custom-nav">
+    <view class="nav-status" style="height: {{statusBarHeight}}px;"></view>
+    <view class="nav-bar glass-nav">
+    <view class="nav-left" bindtap="onBack">
+      <text class="nav-icon">←</text>
+    </view>
+    <text class="nav-title">证据链</text>
+    <view class="nav-right"></view>
+    </view>
+  </view>
+
+  <scroll-view scroll-y class="content-scroll" style="padding-top: {{statusBarHeight + 44}}px; height: calc(100vh - {{statusBarHeight + 44}}px);">
+    <!-- Insight Summary Card -->
+    <view class="insight-summary-card">
+      <text class="summary-label">核心洞察 · {{evidences.length}} 条证据</text>
+      <text class="summary-title">{{insightTitle}}</text>
+      <text class="summary-desc">{{insightDesc}}</text>
+    </view>
+
+    <!-- Evidence hint -->
+    <view class="evidence-hint">
+      <text class="hint-text">以下为支撑该洞察的原始证据</text>
+    </view>
+
+    <!-- Evidence Cards -->
+    <view class="evidence-card card-item" wx:for="{{evidences}}" wx:key="id">
+      <!-- User Info Row -->
+      <view class="ev-header">
+        <view class="ev-avatar">
+          <text class="avatar-text">用户</text>
+        </view>
+        <view class="ev-user-info">
+          <text class="ev-user-name">{{item.userName}}</text>
+          <view class="ev-timestamp-row" wx:if="{{item.timestamp !== '—'}}">
+            <text class="timestamp-icon">时间</text>
+            <text class="timestamp-text">{{item.timestamp}}</text>
+          </view>
+        </view>
+        <view class="ev-type-tag ev-type-{{item.type}}">
+          <text>{{item.type === 'audio' ? '音频' : '文字'}}</text>
+        </view>
+      </view>
+
+      <!-- Quote -->
+      <view class="ev-quote">
+        <text class="quote-text">「{{item.quote}}」</text>
+      </view>
+
+      <!-- Play Button (for audio) -->
+      <view class="ev-play-btn" wx:if="{{item.type === 'audio'}}" bindtap="onPlayTap" data-id="{{item.id}}">
+        <text class="play-icon">▶</text>
+        <text class="play-label">播放原声片段</text>
+      </view>
+    </view>
+
+    <!-- Cross Validation Card -->
+    <view class="validation-card">
+      <text class="validation-title">交叉验证结果</text>
+      <view class="validation-item" wx:for="{{crossValidation}}" wx:key="label">
+        <text class="val-icon {{item.pass ? 'val-pass' : 'val-warn'}}">{{item.pass ? '通过' : '注意'}}</text>
+        <text class="val-label {{item.pass ? 'label-pass' : 'label-warn'}}">{{item.label}}</text>
+      </view>
+    </view>
+
+    <view style="height: {{showAudioPlayer ? '200rpx' : '40rpx'}}"></view>
+  </scroll-view>
+
+  <!-- Audio Player Panel -->
+  <view class="audio-player {{showAudioPlayer ? 'player-show' : ''}}" wx:if="{{showAudioPlayer}}">
+    <view class="player-controls">
+      <view class="player-play-btn" bindtap="togglePlay">
+        <text class="player-play-icon">{{isPlaying ? '⏸' : '▶'}}</text>
+      </view>
+      <view class="player-info">
+        <text class="player-status">原声播放中</text>
+        <view class="player-progress-track">
+          <view class="player-progress-fill" style="width: 30%"></view>
+        </view>
+      </view>
+      <view class="player-close-btn" bindtap="closePlayer">
+        <text class="close-icon">关闭</text>
+      </view>
+    </view>
+  </view>
+</view>

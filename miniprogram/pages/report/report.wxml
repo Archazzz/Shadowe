@@ -1,0 +1,149 @@
+<view class="report-page">
+  <!-- Custom Nav -->
+  <view class="custom-nav">
+    <view class="nav-status" style="height: {{statusBarHeight}}px;"></view>
+    <view class="nav-bar glass-nav">
+    <view class="nav-left" bindtap="onBack">
+      <text class="nav-icon">←</text>
+    </view>
+    <view class="nav-center">
+      <text class="nav-title">综合报告</text>
+      <text class="nav-date">{{report.generatedAt}}</text>
+    </view>
+    <view class="nav-right"></view>
+    </view>
+  </view>
+
+  <scroll-view scroll-y class="content-scroll" style="padding-top: {{statusBarHeight + 44}}px; height: calc(100vh - {{statusBarHeight + 44}}px);" wx:if="{{report}}">
+    <!-- Executive Summary -->
+    <view class="summary-card">
+      <view class="summary-accent"></view>
+      <view class="summary-content">
+        <view class="summary-header">
+          <text class="summary-label-icon">摘要</text>
+          <text class="summary-label">执行摘要</text>
+        </view>
+        <text class="summary-text">{{report.execSummary}}</text>
+      </view>
+    </view>
+
+    <!-- Key Findings Section -->
+    <view class="dark-section">
+      <view class="section-head" bindtap="toggleSection" data-key="findings">
+        <view class="section-icon-wrap">
+          <text class="section-icon">发现</text>
+        </view>
+        <text class="section-title">关键发现</text>
+        <text class="section-arrow {{collapsedSections.findings ? 'collapsed' : ''}}">▾</text>
+      </view>
+      <view class="section-body" wx:if="{{!collapsedSections.findings}}">
+        <view class="finding-card" wx:for="{{report.keyFindings}}" wx:key="id">
+          <view class="finding-top">
+            <text class="finding-title">{{item.title}}</text>
+            <view class="confidence-ring-wrap">
+              <!-- Confidence Ring: L1=full, L2=66%, L3=33% -->
+              <view class="conf-circle conf-{{item.confidence}}">
+                <view class="conf-dot conf-dot-{{item.confidence}}"></view>
+              </view>
+              <text class="conf-text conf-text-{{item.confidence}}">{{item.confidence}}</text>
+            </view>
+          </view>
+          <text class="finding-desc">{{item.description}}</text>
+
+          <!-- Progress bar -->
+          <view class="finding-bar-track">
+            <view class="finding-bar-fill" style="width: {{item.percent || 60}}%"></view>
+          </view>
+
+          <view class="finding-evidence" bindtap="onViewEvidence" data-id="{{item.id}}">
+            <text class="evidence-count">查看 {{item.evidence || 3}} 条证据</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- User Personas Section -->
+    <view class="dark-section">
+      <view class="section-head" bindtap="toggleSection" data-key="personas">
+        <view class="section-icon-wrap icon-purple">
+          <text class="section-icon">用户</text>
+        </view>
+        <text class="section-title">用户群体</text>
+        <text class="section-arrow {{collapsedSections.personas ? 'collapsed' : ''}}">▾</text>
+      </view>
+      <view class="section-body" wx:if="{{!collapsedSections.personas}}">
+        <view class="persona-pills">
+          <view class="persona-pill" wx:for="{{report.personas}}" wx:key="name">
+            <text class="persona-name">{{item.name}}</text>
+            <view class="persona-count-badge">
+              <text class="persona-count-text">{{item.count}}人</text>
+            </view>
+          </view>
+        </view>
+
+        <!-- Finding progress bars -->
+        <view class="persona-progress-item" wx:for="{{report.keyFindings}}" wx:key="id" wx:for-item="f">
+          <view class="pp-row">
+            <text class="pp-label">{{f.title}}</text>
+            <text class="pp-value">{{f.percent || 75}}%</text>
+          </view>
+          <view class="pp-track">
+            <view class="pp-fill" style="width: {{f.percent || 75}}%"></view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- Recommendations Section -->
+    <view class="dark-section">
+      <view class="section-head" bindtap="toggleSection" data-key="recommendations">
+        <view class="section-icon-wrap icon-orange">
+          <text class="section-icon">建议</text>
+        </view>
+        <text class="section-title">行动建议</text>
+        <text class="section-arrow {{collapsedSections.recommendations ? 'collapsed' : ''}}">▾</text>
+      </view>
+      <view class="section-body" wx:if="{{!collapsedSections.recommendations}}">
+        <view class="rec-card" wx:for="{{report.recommendations}}" wx:key="what">
+          <view class="rec-grid">
+            <view class="rec-item">
+              <text class="rec-key">做什么</text>
+              <text class="rec-val">{{item.what}}</text>
+            </view>
+            <view class="rec-item">
+              <text class="rec-key">为什么</text>
+              <text class="rec-val">{{item.why}}</text>
+            </view>
+            <view class="rec-item">
+              <text class="rec-key">谁负责</text>
+              <text class="rec-val">{{item.who}}</text>
+            </view>
+            <view class="rec-item">
+              <text class="rec-key">什么时候</text>
+              <text class="rec-val">{{item.when}}</text>
+            </view>
+          </view>
+          <view class="kill-criteria">
+            <text class="kill-icon">!</text>
+            <text class="kill-text">Kill 条件：{{item.killCriteria}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- Disclaimer -->
+    <view class="disclaimer-card">
+      <text class="disclaimer-icon">!</text>
+      <text class="disclaimer-text">本报告基于 {{report.keyFindings.length || 3}} 条关键发现，样本量为 4 人，结论存在一定局限性。建议在更大样本中验证主要洞察。</text>
+    </view>
+
+    <!-- Export CTA -->
+    <view class="bottom-cta">
+      <view class="cta-btn" bindtap="onExportTap">
+        <text class="cta-text">导出完整报告</text>
+      </view>
+    </view>
+
+    <view style="height: 40rpx;"></view>
+  </scroll-view>
+</view>

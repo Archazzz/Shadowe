@@ -1,0 +1,74 @@
+<view class="export-page">
+  <!-- Custom Nav -->
+  <view class="custom-nav">
+    <view class="nav-status" style="height: {{statusBarHeight}}px;"></view>
+    <view class="nav-bar glass-nav">
+    <view class="nav-left" bindtap="onBack">
+      <text class="nav-icon">←</text>
+    </view>
+    <text class="nav-title">导出报告</text>
+    <view class="nav-right"></view>
+    </view>
+  </view>
+
+  <scroll-view scroll-y class="content-scroll" style="padding-top: {{statusBarHeight + 44}}px; height: calc(100vh - {{statusBarHeight + 44}}px);" enable-flex>
+    <!-- Format Selection -->
+    <view class="section-label">选择格式</view>
+    <view class="format-row">
+      <view class="format-card {{selectedFormat === item.id ? 'format-selected' : ''}}" wx:for="{{formats}}" wx:key="id" bindtap="onSelectFormat" data-id="{{item.id}}">
+        <view class="format-icon-wrap" style="background: {{item.gradient}}">
+          <text class="format-icon">{{item.icon}}</text>
+        </view>
+        <text class="format-name">{{item.name}}</text>
+        <text class="format-desc">{{item.desc}}</text>
+      </view>
+    </view>
+
+    <!-- Content Options -->
+    <view class="section-label">包含内容</view>
+    <view class="options-card card-item">
+      <view class="option-row" wx:for="{{sections}}" wx:key="id" bindtap="onToggleSection" data-id="{{item.id}}">
+        <view class="checkbox {{item.checked ? 'checkbox-checked' : ''}}">
+          <text class="checkbox-icon" wx:if="{{item.checked}}">✓</text>
+        </view>
+        <text class="option-name">{{item.name}}</text>
+      </view>
+    </view>
+
+    <!-- Export Progress -->
+    <view class="progress-section" wx:if="{{isExporting}}">
+      <view class="progress-card card-item">
+        <text class="progress-title">正在生成{{selectedFormat === 'pdf' ? 'PDF' : selectedFormat === 'markdown' ? 'Markdown' : '图片'}}…</text>
+        <view class="progress-bar-wrap">
+          <view class="progress-bar-track">
+            <view class="progress-bar-fill" style="width: {{exportProgress}}%"></view>
+          </view>
+          <text class="progress-pct">{{exportProgress}}%</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- Success State -->
+    <view class="success-section" wx:if="{{exportSuccess}}">
+      <view class="success-card">
+        <view class="success-icon-wrap">
+          <text class="success-icon">✓</text>
+        </view>
+        <text class="success-title">导出完成！</text>
+        <text class="success-desc">文件已保存到本地</text>
+        <view class="success-action" bindtap="onOpenFile">
+          <text class="success-action-text">打开文件</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- Export Button -->
+    <view class="export-cta" wx:if="{{!isExporting && !exportSuccess}}">
+      <view class="cta-btn" bindtap="onExport">
+        <text class="cta-text">开始导出</text>
+      </view>
+    </view>
+
+    <view style="height: 40rpx"></view>
+  </scroll-view>
+</view>

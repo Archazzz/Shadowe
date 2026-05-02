@@ -1,0 +1,63 @@
+<view class="page">
+  <!-- Header -->
+  <view class="custom-header">
+    <view class="header-status" style="height: {{statusBarHeight}}px;"></view>
+    <view class="header">
+    <view class="header-top">
+      <view class="header-left" bindtap="goBack">
+        <image class="back-arrow" src="/static/icons/arrow-left-white.svg" mode="aspectFit" />
+      </view>
+      <view class="header-right"></view>
+    </view>
+    <view class="header-content">
+      <image class="brand-logo rotating" src="/static/icons/brand-logo.svg" mode="aspectFit" />
+      <text class="material-name">{{materialName}}</text>
+      <text class="analyzing-title">AI 深度分析中</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- Progress Bar -->
+  <view class="progress-section" style="margin-top: {{statusBarHeight + 130}}px;">
+    <view class="progress-bar">
+      <view class="progress-fill" style="width: {{progressPercent}}%;">
+        <view class="progress-shimmer"></view>
+      </view>
+    </view>
+    <text class="progress-text">{{progressPercent}}%</text>
+  </view>
+
+  <!-- Analysis Steps -->
+  <view class="steps-section">
+    <view class="step-card {{item.status === 'active' ? 'step-active' : ''}} {{item.status === 'completed' ? 'step-completed' : ''}} {{item.status === 'pending' ? 'step-pending' : ''}}"
+          wx:for="{{steps}}" wx:key="id">
+      <view class="step-header">
+        <view class="agent-badge {{item.agent === 'Kate' ? 'badge-kate' : 'badge-steven'}}">
+          <text class="agent-name">{{item.agent}}</text>
+        </view>
+        <view class="step-status-icon" wx:if="{{item.status === 'completed'}}">
+          <text class="checkmark">✓</text>
+        </view>
+        <view class="step-status-icon pulsing" wx:if="{{item.status === 'active'}}">
+          <view class="active-dot"></view>
+        </view>
+      </view>
+      <view class="step-body">
+        <text class="step-title">{{item.title}}</text>
+        <text class="step-desc">{{item.desc}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- Fun Text Card -->
+  <view class="fun-card" wx:if="{{!isComplete}}">
+    <text class="fun-text">{{funText}}</text>
+  </view>
+
+  <!-- Complete Button -->
+  <view class="complete-section" wx:if="{{isComplete}}">
+    <view class="complete-btn" bindtap="viewResults">
+      <text class="complete-btn-text">查看分析结果</text>
+    </view>
+  </view>
+</view>

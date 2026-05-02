@@ -1,0 +1,235 @@
+<view class="page">
+  <!-- Header -->
+  <view class="custom-header">
+    <view class="header-status" style="height: {{statusBarHeight}}px;"></view>
+    <view class="header">
+    <view class="header-left" bindtap="onBack">
+      <text class="header-icon">‹</text>
+    </view>
+    <text class="header-title">问卷导入与筛选</text>
+    <view class="header-right" bindtap="onClose">
+      <text class="header-close">✕</text>
+    </view>
+    </view>
+  </view>
+
+  <!-- Step Indicator -->
+  <view class="step-indicator" style="margin-top: {{statusBarHeight + 44}}px;">
+    <view class="step-track">
+      <view class="step-progress" style="width: {{currentStep >= 2 ? '100%' : currentStep === 1 ? '50%' : '0%'}}"></view>
+    </view>
+    <view class="steps">
+      <view class="step-item {{currentStep === 0 ? 'active' : currentStep > 0 ? 'done' : ''}}" bindtap="onStepTap" data-step="0">
+        <view class="step-dot {{currentStep === 0 ? 'pulse' : ''}}">
+          <text wx:if="{{currentStep > 0}}">✓</text>
+          <text wx:else>1</text>
+        </view>
+        <text class="step-label">导入</text>
+      </view>
+      <view class="step-item {{currentStep === 1 ? 'active' : currentStep > 1 ? 'done' : ''}}" bindtap="onStepTap" data-step="1">
+        <view class="step-dot {{currentStep === 1 ? 'pulse' : ''}}">
+          <text wx:if="{{currentStep > 1}}">✓</text>
+          <text wx:else>2</text>
+        </view>
+        <text class="step-label">筛选</text>
+      </view>
+      <view class="step-item {{currentStep === 2 ? 'active' : ''}}" bindtap="onStepTap" data-step="2">
+        <view class="step-dot {{currentStep === 2 ? 'pulse' : ''}}">
+          <text>3</text>
+        </view>
+        <text class="step-label">访谈问题</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- Step 0: Import -->
+  <view class="step-content" wx:if="{{currentStep === 0}}">
+    <!-- Upload Options -->
+    <view class="import-cards" wx:if="{{!importedData}}">
+      <view class="import-card" bindtap="onUploadFile">
+        <view class="import-card-icon">📁</view>
+        <text class="import-card-title">上传文件</text>
+        <text class="import-card-desc">支持 CSV / Excel 格式</text>
+      </view>
+      <view class="import-card" bindtap="onPasteData">
+        <view class="import-card-icon">📋</view>
+        <text class="import-card-title">粘贴数据</text>
+        <text class="import-card-desc">直接粘贴问卷数据</text>
+      </view>
+    </view>
+
+    <!-- Processing indicator -->
+    <view class="processing" wx:if="{{isProcessing}}">
+      <view class="processing-spinner"></view>
+      <text class="processing-text">AI 正在解析数据...</text>
+    </view>
+
+    <!-- Data Preview -->
+    <view class="data-preview" wx:if="{{importedData && !isProcessing}}">
+      <view class="preview-header">
+        <text class="preview-title">数据预览</text>
+        <text class="preview-source">{{importedData.source}}</text>
+      </view>
+      <view class="preview-stats">
+        <text class="preview-stat">总行数: {{importedData.totalRows}}</text>
+        <text class="preview-stat">有效行: {{importedData.validRows}}</text>
+      </view>
+
+      <!-- Quality Badges -->
+      <view class="quality-badges">
+        <view class="quality-badge" wx:for="{{qualityBadges}}" wx:key="label">
+          <view class="badge-dot" style="background: {{item.color}}"></view>
+          <text class="badge-label">{{item.label}}</text>
+          <text class="badge-count">{{item.count}}</text>
+        </view>
+      </view>
+
+      <!-- Preview Table -->
+      <view class="preview-table">
+        <view class="table-row table-header">
+          <text class="table-cell">ID</text>
+          <text class="table-cell">满意度</text>
+          <text class="table-cell">使用频率</text>
+          <text class="table-cell wide">开放题</text>
+        </view>
+        <view class="table-row" wx:for="{{dataPreview}}" wx:key="id">
+          <text class="table-cell">{{item.id}}</text>
+          <text class="table-cell">{{item.q1}}</text>
+          <text class="table-cell">{{item.q2}}</text>
+          <text class="table-cell wide {{item.quality === 'high' ? 'quality-high' : item.quality === 'medium' ? 'quality-medium' : 'quality-low'}}">{{item.q3}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- Step 1: Screening -->
+  <view class="step-content" wx:if="{{currentStep === 1}}">
+    <!-- Summary Card -->
+    <view class="summary-card glass-card">
+      <view class="summary-row">
+        <view class="summary-item">
+          <text class="summary-number">{{summaryInfo.total}}</text>
+          <text class="summary-label">问卷总量</text>
+        </view>
+        <view class="summary-arrow">→</view>
+        <view class="summary-item highlight">
+          <text class="summary-number">{{summaryInfo.candidates}}</text>
+          <text class="summary-label">推荐候选人</text>
+        </view>
+        <view class="summary-item">
+          <text class="summary-number">{{summaryInfo.confidence}}%</text>
+          <text class="summary-label">置信度</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- Strategy Grid -->
+    <view class="section-title">筛选策略</view>
+    <view class="strategy-grid">
+      <view class="strategy-card {{selectedStrategy === index ? 'selected' : ''}}" wx:for="{{strategies}}" wx:key="id" bindtap="onSelectStrategy" data-index="{{index}}">
+        <text class="strategy-icon">{{item.icon}}</text>
+        <text class="strategy-name">{{item.name}}</text>
+        <text class="strategy-desc">{{item.desc}}</text>
+      </view>
+    </view>
+
+    <!-- Candidate List -->
+    <view class="section-title">推荐候选人</view>
+    <view class="candidate-list">
+      <view class="candidate-card glass-card" wx:for="{{mockQuestionnaireCandidates}}" wx:key="id" bindtap="onToggleCandidate" data-index="{{index}}">
+        <view class="candidate-header">
+          <view class="candidate-rank">
+            <text class="rank-number">{{item.rank}}</text>
+          </view>
+          <view class="candidate-info">
+            <text class="candidate-id">{{item.id}}</text>
+            <text class="candidate-reason">{{item.reason}}</text>
+          </view>
+          <view class="candidate-score">
+            <text class="score-value">{{item.score}}</text>
+            <text class="score-label">分</text>
+          </view>
+          <text class="expand-icon {{expandedCandidate === index ? 'expanded' : ''}}">›</text>
+        </view>
+
+        <!-- Expanded Dimensions -->
+        <view class="candidate-dimensions" wx:if="{{expandedCandidate === index}}">
+          <view class="dimension-row">
+            <text class="dim-label">回答质量</text>
+            <view class="dim-bar"><view class="dim-fill" style="width: {{item.dimensions.answerQuality}}%"></view></view>
+            <text class="dim-score">{{item.dimensions.answerQuality}}</text>
+          </view>
+          <view class="dimension-row">
+            <text class="dim-label">极端性</text>
+            <view class="dim-bar"><view class="dim-fill" style="width: {{item.dimensions.extremity}}%"></view></view>
+            <text class="dim-score">{{item.dimensions.extremity}}</text>
+          </view>
+          <view class="dimension-row">
+            <text class="dim-label">角色匹配</text>
+            <view class="dim-bar"><view class="dim-fill" style="width: {{item.dimensions.roleMatch}}%"></view></view>
+            <text class="dim-score">{{item.dimensions.roleMatch}}</text>
+          </view>
+          <view class="dimension-row">
+            <text class="dim-label">表达力</text>
+            <view class="dim-bar"><view class="dim-fill" style="width: {{item.dimensions.expressiveness}}%"></view></view>
+            <text class="dim-score">{{item.dimensions.expressiveness}}</text>
+          </view>
+          <view class="dimension-row">
+            <text class="dim-label">可靠性</text>
+            <view class="dim-bar"><view class="dim-fill" style="width: {{item.dimensions.reliability}}%"></view></view>
+            <text class="dim-score">{{item.dimensions.reliability}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- Step 2: Interview Questions -->
+  <view class="step-content" wx:if="{{currentStep === 2}}">
+    <!-- Processing -->
+    <view class="processing" wx:if="{{isProcessing}}">
+      <view class="processing-spinner"></view>
+      <text class="processing-text">AI 正在生成访谈问题...</text>
+    </view>
+
+    <view wx:if="{{!isProcessing && interviewQuestions.length > 0}}">
+      <!-- Success Indicator -->
+      <view class="success-card glass-card">
+        <text class="success-icon">✅</text>
+        <view class="success-info">
+          <text class="success-title">问题生成完成</text>
+          <text class="success-desc">已为 {{interviewQuestions.length}} 位候选人生成专属访谈问题</text>
+        </view>
+      </view>
+
+      <!-- Per-candidate Questions -->
+      <view class="question-cards">
+        <view class="question-group" wx:for="{{interviewQuestions}}" wx:key="candidateId">
+          <view class="group-header">
+            <text class="group-avatar">👤</text>
+            <text class="group-id">{{item.candidateId}}</text>
+            <text class="group-score">{{item.score}}分</text>
+          </view>
+          <view class="question-card" wx:for="{{item.questions}}" wx:for-item="q" wx:key="index">
+            <view class="question-type" style="background: {{q.typeColor}}20; color: {{q.typeColor}}">
+              <text>{{q.type}}</text>
+            </view>
+            <text class="question-text">{{q.text}}</text>
+            <view class="question-followup">
+              <text class="followup-icon">💬</text>
+              <text class="followup-text">{{q.followUp}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- Bottom CTA -->
+  <view class="bottom-cta">
+    <button class="cta-button {{currentStep === 0 && !importedData ? 'disabled' : currentStep === 1 && selectedStrategy < 0 ? 'disabled' : ''}}" bindtap="onCTATap" disabled="{{(currentStep === 0 && !importedData) || (currentStep === 1 && selectedStrategy < 0) || isProcessing}}">
+      <text wx:if="{{isProcessing}}">处理中...</text>
+      <text wx:else>{{ctaText}}</text>
+    </button>
+  </view>
+</view>

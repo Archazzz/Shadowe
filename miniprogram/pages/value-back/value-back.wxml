@@ -1,0 +1,102 @@
+<view class="page">
+  <!-- Header -->
+  <view class="custom-header">
+    <view class="header-status" style="height: {{statusBarHeight}}px;"></view>
+    <view class="header">
+    <view class="header-left" bindtap="onBack">
+      <text class="header-icon">‹</text>
+    </view>
+    <text class="header-title">升级专业版</text>
+    <view class="header-right"></view>
+    </view>
+  </view>
+
+  <!-- Hero Section -->
+  <view class="hero-section" style="margin-top: {{statusBarHeight + 44}}px;">
+    <view class="hero-bg"></view>
+    <view class="hero-content">
+      <view class="hero-star">
+        <text class="star-icon pulse-star">⭐</text>
+      </view>
+      <text class="hero-title">解锁全部研究能力</text>
+      <text class="hero-subtitle">专业版，让洞察更深入</text>
+    </view>
+  </view>
+
+  <!-- Plan Selection -->
+  <view class="plan-section">
+    <view class="plan-cards">
+      <!-- Monthly Plan -->
+      <view class="plan-card {{selectedPlan === 'monthly' ? 'selected' : ''}}" bindtap="onSelectPlan" data-plan="monthly">
+        <view class="plan-radio">
+          <view class="radio-inner {{selectedPlan === 'monthly' ? 'radio-active' : ''}}"></view>
+        </view>
+        <view class="plan-info">
+          <text class="plan-name">月付</text>
+          <view class="plan-price-row">
+            <text class="plan-price">¥49</text>
+            <text class="plan-unit">/月</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- Yearly Plan -->
+      <view class="plan-card {{selectedPlan === 'yearly' ? 'selected' : ''}} plan-card-yearly" bindtap="onSelectPlan" data-plan="yearly">
+        <view class="plan-badge">最受欢迎</view>
+        <view class="plan-radio">
+          <view class="radio-inner {{selectedPlan === 'yearly' ? 'radio-active' : ''}}"></view>
+        </view>
+        <view class="plan-info">
+          <text class="plan-name">年付</text>
+          <view class="plan-price-row">
+            <text class="plan-price">¥29</text>
+            <text class="plan-unit">/月</text>
+          </view>
+          <text class="plan-original">原价 ¥49/月</text>
+        </view>
+        <view class="plan-save">
+          <text class="save-text">省41%</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- Feature Comparison -->
+  <view class="comparison-section">
+    <text class="comparison-title">功能对比</text>
+    <view class="comparison-table">
+      <view class="table-header-row">
+        <text class="table-col-feature">功能</text>
+        <text class="table-col-plan">免费版</text>
+        <text class="table-col-plan pro-col">专业版</text>
+      </view>
+      <view class="table-row {{item.highlight ? 'row-highlight' : ''}}" wx:for="{{features}}" wx:key="name">
+        <text class="table-col-feature">{{item.name}}</text>
+        <text class="table-col-plan">{{item.free}}</text>
+        <text class="table-col-plan pro-col pro-text">{{item.pro}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- Invite Friend Card -->
+  <view class="invite-card" bindtap="onInviteFriend">
+    <view class="invite-border"></view>
+    <view class="invite-content">
+      <text class="invite-icon">🎁</text>
+      <view class="invite-text">
+        <text class="invite-title">邀请好友双方各得30天专业版</text>
+        <text class="invite-desc">分享给需要做研究的朋友</text>
+      </view>
+      <text class="invite-arrow">›</text>
+    </view>
+  </view>
+
+  <!-- Bottom CTA -->
+  <view class="bottom-cta">
+    <button class="cta-button" bindtap="onUpgrade">
+      <text wx:if="{{selectedPlan === 'yearly'}}">立即升级 · ¥348/年</text>
+      <text wx:else>立即升级 · ¥49/月</text>
+    </button>
+    <text class="cta-note">订阅可随时取消，按年付更优惠</text>
+  </view>
+</view>

@@ -1,0 +1,38 @@
+<view class="import-page">
+  <!-- Custom Nav Bar -->
+  <view class="custom-nav">
+    <view class="nav-status" style="height: {{statusBarHeight}}px;"></view>
+    <view class="nav-bar">
+    <view class="nav-back" bindtap="onBackTap">
+      <text class="nav-arrow">←</text>
+    </view>
+    <text class="nav-title">导入素材</text>
+    <view class="nav-placeholder"></view>
+    </view>
+  </view>
+
+  <scroll-view scroll-y class="content-scroll" style="padding-top: {{statusBarHeight + 44}}px; height: calc(100vh - {{statusBarHeight + 44}}px);" enable-flex>
+    <!-- Import Method Cards -->
+    <view class="method-list">
+      <view class="method-card {{item.hasAccent ? 'method-card--accent' : ''}}" wx:for="{{importMethods}}" wx:key="id" bindtap="onImportTap" data-method="{{item.id}}">
+        <view class="method-icon-circle">
+          <text class="method-icon">{{item.icon}}</text>
+        </view>
+        <view class="method-info">
+          <view class="method-title-row">
+            <text class="method-title">{{item.title}}</text>
+            <view class="method-new-badge" wx:if="{{item.isNew}}">NEW</view>
+          </view>
+          <text class="method-desc">{{item.desc}}</text>
+        </view>
+        <text class="method-arrow">›</text>
+      </view>
+    </view>
+
+    <!-- Tip -->
+    <view class="import-tip">
+      <text class="tip-icon">💡</text>
+      <text class="tip-text">支持多种素材格式，AI将自动识别并分析内容</text>
+    </view>
+  </scroll-view>
+</view>
