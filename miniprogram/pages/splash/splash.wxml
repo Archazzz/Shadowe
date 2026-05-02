@@ -2,26 +2,29 @@
   <!-- Status Bar Spacer -->
   <view style="height: {{statusBarHeight}}px;"></view>
 
-  <!-- Ambient glow -->
-  <view class="glow-top"></view>
+  <!-- Ambient Background Orbs -->
+  <view class="ambient-orb orb-1"></view>
+  <view class="ambient-orb orb-2"></view>
+  <view class="ambient-orb orb-3"></view>
 
-  <!-- Logo -->
+  <!-- Logo - Liquid Glass Orb -->
   <view class="logo-section">
+    <view class="logo-glass-orb"></view>
     <view class="logo-ring ring-1"></view>
     <view class="logo-ring ring-2"></view>
     <view class="logo-ring ring-3"></view>
-    <view class="logo-circle">
+    <view class="logo-core">
       <text class="logo-icon">🤖</text>
     </view>
   </view>
 
   <!-- Brand name -->
   <view class="brand-section">
-    <text class="brand-name">AI用户研究助手</text>
+    <text class="brand-name">AI 用户研究助手</text>
     <text class="brand-slogan">人类访谈者的隐形分析助手</text>
   </view>
 
-  <!-- Divider -->
+  <!-- Divider with Glow -->
   <view class="divider-line"></view>
 
   <!-- Feature cards -->
@@ -33,7 +36,7 @@
     </view>
     <view class="feature-card">
       <text class="feature-icon">🧠</text>
-      <text class="feature-label">AI深度洞察</text>
+      <text class="feature-label">AI 深度洞察</text>
       <text class="feature-sub">痛点·需求·机会</text>
     </view>
     <view class="feature-card">
@@ -43,10 +46,10 @@
     </view>
   </view>
 
-  <!-- Version badge -->
+  <!-- Version badge - Glass Capsule -->
   <view class="version-badge">
     <view class="version-dot"></view>
-    <text class="version-text">Design System 1.0</text>
+    <text class="version-text">Design System 2.0</text>
   </view>
 
   <!-- Bottom CTA -->
