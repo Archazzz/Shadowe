@@ -1,30 +1,41 @@
 ```
-# Dependencies
-node_modules/
+# Mini-program specific
+miniprogram/.swan/
+miniprogram/.vuepress/
+miniprogram/node_modules/
 
 # Build outputs
-dist/
-build/
-.miniprogram_devtools/
+miniprogram/dist/
+miniprogram/build/
 
 # Logs
 *.log
 
-# Environment variables
+# Environment
 .env
 .env.local
-*.env.*
+.env.*
 
-# IDE files
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# IDE
 .vscode/
 .idea/
 *.swp
 *.swo
-*.tmp
 
-# OS generated files
+# OS
 .DS_Store
 Thumbs.db
+
+# Coverage
+coverage/
+htmlcov/
+.coverage
 
 # Python
 __pycache__/
@@ -32,29 +43,105 @@ __pycache__/
 *.pyo
 *.pyd
 .Python
-*.so
+env/
+venv/
+.venv/
+pip-log.txt
+pip-delete-this-directory.txt
+.tox/
+.coverage
+.nox/
+*.cover
+*.log
+*.pot
+*.pyc
+*.pyo
+*.pyd
+.MF
+.project
+.pydevproject
+.metadata
+*.sublime-workspace
+.vscode
+.coverage
+.cache
+.pytest_cache/
+.mypy_cache/
+.hypothesis/
 
-# Compressed files
-*.zip
-*.gz
-*.tar
-*.tgz
-*.bz2
-*.xz
-*.7z
-*.rar
-*.zst
-*.lz4
-*.lzh
-*.cab
-*.arj
-*.rpm
-*.deb
-*.Z
-*.lz
-*.lzo
-*.tar.gz
-*.tar.bz2
-*.tar.xz
-*.tar.zst
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.yarn-integrity
+.yarn/
+.pnp.*
+.pnp.js
+node_modules/
+*.tsbuildinfo
+next-env.d.ts
+.nuxt
+.cache/
+.svelte-kit/
+.svelte/
+.sveltesrc
+.svelte-kit/
+.svelte/
+.sveltesrc
+.vercel
+.netlify
+netlify/
+
+# Webpack
+webpack.config.js
+webpack.config.babel.js
+.webpack
+.webpackrc
+.roadhogrc
+.umirc
+.umi/
+.umi-production/
+.umi-test/
+.ice/
+.ice-cache/
+.ice-temp/
+.father/
+.fatherrc.js
+.fatherrc.ts
+.fatherrc.json
+.fatherrc.yaml
+.fatherrc.yml
+
+# Taro
+dist/
+.taro/
+.temp/
+.cache/
+.src/
+.types/
+.output/
+.build/
+.compile/
+.bundle/
+.assets/
+.public/
+.static/
+.upload/
+.download/
+.tmp/
+.temp/
+.cache/
+.src/
+.types/
+.output/
+.build/
+.compile/
+.bundle/
+.assets/
+.public/
+.static/
+.upload/
+.download/
 ```
